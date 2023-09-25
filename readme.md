@@ -14,8 +14,7 @@ In `vae.py` you can find a very minimal and clean implementation of a VAE. The c
 The `Vanilla_Encoder` and `Vanilla_Decoder` classes are regular `nn.Modules` that implement the encoder and decoder of a VAE. Noticeably, they each output a `torch.distributions.Distribution` object, in line with the theory of variational autoencoders.
 
 A VAE's loss function (known as - evidence lower bound or ELBO) is comprised of two main components: a reconstruction loss and a KL-divergence.
-
-$$\mathcal{L}(x) = \underbrace{D_{\mathrm{KL}} (q(z|x)||p(z))}_{\text{KL term}} - \underbrace{\mathbb{E}_{z\sim q(z|x)}[\log p(x|z)]}_{\text{Reconstruction loss}}$$
+$$\mathcal{L}(x) = \underbrace{D\_{\mathrm{KL}} (q(z|x)||p(z))}\_{\text{KL term}} - \underbrace{\mathbb{E}\_{z\sim q(z|x)}[\log p(x|z)]}\_{\text{Reconstruction loss}}$$
 
 Given an input sample $x$, it is first passed through the encoder which returns a distribution $q(z|x)$ over the latent variables. ($q(z|x)$ is called the *approximate posterior*) This distribution should be close to a prior distribution that we have specified. The KL divergence between the approximate posterior and the prior, $p(z)$ gives us the KL term in VAE's loss function. To get the reconstruction term, we use the reparameterization trick to get a differentiable sample $z$ from the distribution $q(z|x)$. We pass this sample to the decoder which outputs another distribution, $p(x|z)$. (It is called the conditional or the likelihood distribution) The reconstruction loss is basically the log-likelihood of the original data point $x$, under this distribution. By maximizing this, we are incentivizing the decoder to accurately reconstruct $x$ from a sampled latent $z$.
 
